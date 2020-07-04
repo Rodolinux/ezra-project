@@ -361,7 +361,7 @@ async function initApplication()
   console.log("Checking for latest release ...");
   const NewReleaseChecker = require('./helpers/new_release_checker.js');
   var newReleaseChecker = new NewReleaseChecker('new-release-info-box');
-  newReleaseChecker.check();
+  //newReleaseChecker.check();
 }
 
 $(document).ready(function() {
