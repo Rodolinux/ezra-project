@@ -16,7 +16,30 @@
    along with Ezra Project. See the file LICENSE.
    If not, see <http://www.gnu.org/licenses/>. */
 
+const { clipboard } = require('electron');
+
 const Mousetrap = require('mousetrap');
+const VerseSelection = require("../components/verse_selection.js");
+const TagSelectionMenu = require("../tags/tag_selection_menu.js");
+const TagReferenceBox = require("../tags/tag_reference_box.js");
+const TagAssignmentMenu = require("../tags/tag_assignment_menu.js");
+const ModuleSearch = require("../components/module_search.js");
+const TranslationController = require("./translation_controller.js");
+const InstallModuleWizard = require("../module_wizard/install_module_wizard.js");
+const RemoveModuleWizard = require("../module_wizard/remove_module_wizard.js");
+const TextLoader = require("./text_loader.js");
+const VerseContextLoader = require("./verse_context_loader.js");
+const BookSearch = require("../tab_search/tab_search.js");
+const TabController = require("./tab_controller.js");
+const OptionsMenu = require("../components/options_menu.js");
+const NavigationPane = require("../components/navigation_pane.js");
+const TaggedVerseExport = require("../tags/tagged_verse_export.js");
+const TranslationComparison = require("../components/translation_comparison.js");
+const BookSelectionMenu = require("../components/book_selection_menu.js");
+const TagStatistics = require("../tags/tag_statistics.js");
+const DictionaryController = require("../components/dictionary_controller.js");
+const NotesController = require("./notes_controller.js");
+const SwordNotes = require("../components/sword_notes.js");
 
 class BibleBrowserController {
   constructor() {
@@ -24,9 +47,8 @@ class BibleBrowserController {
     this.current_cr_verse_id = null;
   }
 
-  init_component(componentClassName, componentName, componentPath) {
+  init_component(componentClassName, componentName) {
     var expression = "";
-    expression += "const " + componentClassName + " = " + "require('" + componentPath + "');";
     expression += "this." + componentName + " = new " + componentClassName + "();";
     eval(expression);
   }
@@ -34,29 +56,29 @@ class BibleBrowserController {
   async init() {
     this.verse_list_menu_template = $($('.verse-list-menu')[0]).html();
     this.verse_list_composite_template = $($('.verse-list-composite')[0]).html();
-    this.settings = require('electron-settings');
+    //this.settings = require('electron-settings');
 
-    this.init_component("VerseSelection", "verse_selection", "../components/verse_selection.js");
-    this.init_component("TagSelectionMenu", "tag_selection_menu", "../tags/tag_selection_menu.js");
-    this.init_component("TagReferenceBox", "tag_reference_box", "../tags/tag_reference_box.js");
-    this.init_component("TagAssignmentMenu", "tag_assignment_menu", "../tags/tag_assignment_menu.js");
-    this.init_component("ModuleSearch", "module_search", "../components/module_search.js");
-    this.init_component("TranslationController", "translation_controller", "./translation_controller.js");
-    this.init_component("InstallModuleWizard", "install_module_wizard", "../module_wizard/install_module_wizard.js");
-    this.init_component("RemoveModuleWizard", "remove_module_wizard", "../module_wizard/remove_module_wizard.js");
-    this.init_component("TextLoader", "text_loader", "./text_loader.js");
-    this.init_component("VerseContextLoader", "verse_context_loader", "./verse_context_loader.js");
-    this.init_component("BookSearch", "tab_search", "../tab_search/tab_search.js");
-    this.init_component("TabController", "tab_controller", "./tab_controller.js");
-    this.init_component("OptionsMenu", "optionsMenu", "../components/options_menu.js");
-    this.init_component("NavigationPane", "navigation_pane", "../components/navigation_pane.js");
-    this.init_component("TaggedVerseExport", "taggedVerseExport", "../tags/tagged_verse_export.js");
-    this.init_component("TranslationComparison", "translationComparison", "../components/translation_comparison.js");
-    this.init_component("BookSelectionMenu", "book_selection_menu", "../components/book_selection_menu.js");
-    this.init_component("TagStatistics", "tag_statistics", "../tags/tag_statistics.js");
-    this.init_component("DictionaryController", "dictionary_controller", "../components/dictionary_controller.js");
-    this.init_component("NotesController", "notes_controller", "./notes_controller.js");
-    this.init_component("SwordNotes", "sword_notes", "../components/sword_notes.js");
+    this.init_component("VerseSelection", "verse_selection");
+    this.init_component("TagSelectionMenu", "tag_selection_menu");
+    this.init_component("TagReferenceBox", "tag_reference_box");
+    this.init_component("TagAssignmentMenu", "tag_assignment_menu");
+    this.init_component("ModuleSearch", "module_search");
+    this.init_component("TranslationController", "translation_controller");
+    this.init_component("InstallModuleWizard", "install_module_wizard");
+    this.init_component("RemoveModuleWizard", "remove_module_wizard");
+    this.init_component("TextLoader", "text_loader");
+    this.init_component("VerseContextLoader", "verse_context_loader");
+    this.init_component("BookSearch", "tab_search");
+    this.init_component("TabController", "tab_controller");
+    this.init_component("OptionsMenu", "optionsMenu");
+    this.init_component("NavigationPane", "navigation_pane");
+    this.init_component("TaggedVerseExport", "taggedVerseExport");
+    this.init_component("TranslationComparison", "translationComparison");
+    this.init_component("BookSelectionMenu", "book_selection_menu");
+    this.init_component("TagStatistics", "tag_statistics");
+    this.init_component("DictionaryController", "dictionary_controller");
+    this.init_component("NotesController", "notes_controller");
+    this.init_component("SwordNotes", "sword_notes");
 
     this.tag_reference_box.initTagReferenceBox();
     this.initGlobalShortCuts();
@@ -93,7 +115,7 @@ class BibleBrowserController {
                              defaultBibleTranslationId);
   }
 
-  onSearchResultsAvailable = async function(occurances) {
+  async onSearchResultsAvailable(occurances) {
     // We need to re-initialize the Strong's event handlers, because the search function rewrote the verse html elements
     this.dictionary_controller.bindAfterBibleTextLoaded();
 
@@ -266,7 +288,7 @@ class BibleBrowserController {
     return tabHtmlTemplate;
   }
 
-  loadSettings = async function() {
+  async loadSettings() {
     if (this.settings.get('tag_list_width') &&
         this.settings.get('tag_list_width') != null) {
 
@@ -327,9 +349,7 @@ class BibleBrowserController {
     }
   }
 
-  copySelectedVersesToClipboard() {
-    const { clipboard } = require('electron');
-    
+  copySelectedVersesToClipboard() {    
     var selectedVerseBoxes = bible_browser_controller.verse_selection.selected_verse_boxes;
     
     var selectedText = "";
@@ -454,7 +474,7 @@ class BibleBrowserController {
     this.optionsMenu.hideDisplayMenu();
   }
 
-  bindEventsAfterBibleTextLoaded = async function(tabIndex=undefined, preventDoubleBinding=false) {
+  async bindEventsAfterBibleTextLoaded(tabIndex=undefined, preventDoubleBinding=false) {
     var currentVerseList = this.getCurrentVerseList(tabIndex);
 
     var tagBoxes = currentVerseList.find('.tag-box');

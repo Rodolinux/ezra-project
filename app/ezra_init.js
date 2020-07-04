@@ -34,7 +34,7 @@ let dbDir = null;
 let nsi = null;
 
 // UI Helper
-const UiHelper = require('./app/helpers/ui_helper.js');
+const UiHelper = require('./helpers/ui_helper.js');
 const uiHelper = new UiHelper();
 
 let models = null;
@@ -80,7 +80,7 @@ $.create_xml_doc = function(string)
 async function initI18N()
 {
   i18n = require('i18next');
-  I18nHelper = require('./app/helpers/i18n_helper.js');
+  I18nHelper = require('./helpers/i18n_helper.js');
   i18nHelper = new I18nHelper();
 
   await i18nHelper.init();
@@ -99,19 +99,19 @@ function initNSI()
 
 async function initDatabase()
 {
-  const DbHelper = require('./app/helpers/db_helper.js');
+  const DbHelper = require('./helpers/db_helper.js');
   const userDataDir = app.getPath('userData');
   dbHelper = new DbHelper(userDataDir);
   dbDir = dbHelper.getDatabaseDir();
 
   await dbHelper.initDatabase(dbDir);
-  models = require('./models')(dbDir);
+  models = require('../models')(dbDir);
 }
 
 async function initControllers()
 {
-  const BibleBrowserController = require('./app/bible_browser/bible_browser_controller.js');
-  const TagsController = require('./app/tags/tags_controller.js');
+  const BibleBrowserController = require('./bible_browser/bible_browser_controller.js');
+  const TagsController = require('./tags/tags_controller.js');
 
   bible_browser_controller = new BibleBrowserController();
   await bible_browser_controller.init();
@@ -359,7 +359,7 @@ async function initApplication()
   await bible_browser_controller.translation_controller.installStrongsIfNeeded();
 
   console.log("Checking for latest release ...");
-  const NewReleaseChecker = require('./app/helpers/new_release_checker.js');
+  const NewReleaseChecker = require('./helpers/new_release_checker.js');
   var newReleaseChecker = new NewReleaseChecker('new-release-info-box');
   newReleaseChecker.check();
 }
