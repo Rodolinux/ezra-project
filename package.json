@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
+    "bundle": "browserify app/ezra_init.js --no-bundle-external -o dist/ezra_init.js",
     "compile-pug": "pug --client --no-debug --pretty -n verseListTemplate templates/verse_list.pug && pug --client --no-debug --pretty -n tagListTemplate templates/tag_list.pug",
     "postinstall": "npm run compile-pug",
     "rebuild": "electron-rebuild -f -w node-sword-interface -v 8.3.0",

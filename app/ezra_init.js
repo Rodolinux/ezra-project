@@ -275,8 +275,8 @@ function loadFragment(filePath, elementId) {
   const path = require('path');
   const fs = require('fs');
 
-  var absoluteFilePath = path.join(__dirname, filePath);
-  var fileContent = fs.readFileSync(absoluteFilePath);
+  //var absoluteFilePath = path.join(__dirname, filePath);
+  var fileContent = fs.readFileSync(filePath);
   document.getElementById(elementId).innerHTML = fileContent;
 }
 
