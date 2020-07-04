@@ -16,6 +16,13 @@
    along with Ezra Project. See the file LICENSE.
    If not, see <http://www.gnu.org/licenses/>. */
 
+function loadScript(src)
+{
+  var script = document.createElement('script');
+  script.src = src;
+  document.getElementsByTagName('head')[0].appendChild(script);
+}
+
 class TextLoader {
   constructor() {
     loadScript("templates/verse_list.js");

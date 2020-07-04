@@ -41,7 +41,6 @@ module.exports = function(dbDir) {
   };
 
   var sequelize = new Sequelize(config.database, config.username, config.password, config);
-  console.log(__dirname);
 
   fs
     .readdirSync("./models")
@@ -49,8 +48,8 @@ module.exports = function(dbDir) {
       return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
     })
     .forEach(file => {
-      var model = sequelize['import'](path.join(__dirname, file));
-      db[model.name] = model;
+      var currentModel = sequelize.import(file, require('./models/' + file));
+      db[currentModel.name] = currentModel;
     });
 
   Object.keys(db).forEach(modelName => {

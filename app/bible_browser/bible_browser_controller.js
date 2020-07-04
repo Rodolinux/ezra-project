@@ -56,7 +56,7 @@ class BibleBrowserController {
   async init() {
     this.verse_list_menu_template = $($('.verse-list-menu')[0]).html();
     this.verse_list_composite_template = $($('.verse-list-composite')[0]).html();
-    //this.settings = require('electron-settings');
+    this.settings = require('electron-settings');
 
     this.init_component("VerseSelection", "verse_selection");
     this.init_component("TagSelectionMenu", "tag_selection_menu");

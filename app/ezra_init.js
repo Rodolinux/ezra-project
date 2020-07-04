@@ -22,26 +22,26 @@ const app = require('electron').remote.app;
 const { remote, ipcRenderer } = require('electron');
 
 // i18n
-let i18n = null;
-let I18nHelper = null;
-let i18nHelper = null;
+global.i18n = null;
+global.I18nHelper = null;
+global.i18nHelper = null;
 
 // DB-related stuff
 let dbHelper = null;
 let dbDir = null;
 
 // Global instance of NodeSwordInterface used in many places
-let nsi = null;
+global.nsi = null;
 
 // UI Helper
 const UiHelper = require('./helpers/ui_helper.js');
-const uiHelper = new UiHelper();
+global.uiHelper = new UiHelper();
 
-let models = null;
-let bible_browser_controller = null;
-let tags_controller = null;
-let reference_separator = ':';
-let bible_chapter_verse_counts = {};
+global.models = null;
+global.bible_browser_controller = null;
+global.tags_controller = null;
+global.reference_separator = ':';
+global.bible_chapter_verse_counts = {};
 
 function htmlToElement(html) {
   var template = document.createElement('template');
@@ -50,7 +50,7 @@ function htmlToElement(html) {
   return template.content.firstChild;
 }
 
-function sleep(time) {
+global.sleep = function(time) {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve();
@@ -58,7 +58,7 @@ function sleep(time) {
   });
 }
 
-function waitUntilIdle() {
+global.waitUntilIdle = function() {
   return new Promise(resolve => {
     window.requestIdleCallback(() => {
       resolve();
@@ -67,7 +67,7 @@ function waitUntilIdle() {
 }
 
 // based on https://stackoverflow.com/questions/3115150/how-to-escape-regular-expression-special-characters-using-javascript
-function escapeRegExp(text) {
+global.escapeRegExp = function(text) {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 
@@ -119,7 +119,7 @@ async function initControllers()
   tags_controller = new TagsController();
 }
 
-function isMac()
+global.isMac = function()
 {
   return navigator.platform.match('Mac') !== null;
 }
@@ -168,30 +168,30 @@ function initUi()
   $(window).bind("resize", () => { uiHelper.resizeAppContainer(); });
 }
 
-function showGlobalLoadingIndicator() {
+global.showGlobalLoadingIndicator = function() {
   $('#main-content').hide();
   var loadingIndicator = $('#startup-loading-indicator');
   loadingIndicator.show();
   loadingIndicator.find('.loader').show();
 }
 
-function hideGlobalLoadingIndicator() {
+global.hideGlobalLoadingIndicator = function() {
   var loadingIndicator = $('#startup-loading-indicator');
   loadingIndicator.hide();
   $('#main-content').show();
 }
 
-function switchToDarkTheme() {
+global.switchToDarkTheme = function() {
   switchToTheme('css/jquery-ui/dark-hive/jquery-ui.css');
   bible_browser_controller.notes_controller.setDarkTheme();
 }
 
-function switchToRegularTheme() {
+global.switchToRegularTheme = function() {
   switchToTheme('css/jquery-ui/cupertino/jquery-ui.css');
   bible_browser_controller.notes_controller.setLightTheme();
 }
 
-function switchToTheme(theme) {
+global.switchToTheme = function(theme) {
   var currentTheme = document.getElementById("theme-css").href;
 
   if (currentTheme.indexOf(theme) == -1) { // Only switch the theme if it is different from the current theme
@@ -263,7 +263,7 @@ function initNightMode() {
   }
 }
 
-function loadScript(src)
+global.loadScript = function(src)
 {
   var script = document.createElement('script');
   script.src = src;
