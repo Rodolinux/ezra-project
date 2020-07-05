@@ -16,10 +16,9 @@
    along with Ezra Project. See the file LICENSE.
    If not, see <http://www.gnu.org/licenses/>. */
 
-require('v8-compile-cache');
+//require('v8-compile-cache');
 
-const app = require('electron').remote.app;
-const { remote, ipcRenderer } = require('electron');
+const { app, remote, ipcRenderer } = require('electron');
 
 // i18n
 global.i18n = null;
@@ -100,12 +99,12 @@ function initNSI()
 async function initDatabase()
 {
   const DbHelper = require('./helpers/db_helper.js');
-  const userDataDir = app.getPath('userData');
+  const userDataDir = require('electron').remote.app.getPath('userData');
   dbHelper = new DbHelper(userDataDir);
   dbDir = dbHelper.getDatabaseDir();
 
   await dbHelper.initDatabase(dbDir);
-  models = require('../models')(dbDir);
+  models = require('./models')(dbDir);
 }
 
 async function initControllers()
