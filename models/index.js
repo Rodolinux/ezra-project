@@ -48,7 +48,7 @@ module.exports = function(dbDir) {
       return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
     })
     .forEach(file => {
-      var currentModel = sequelize.import(file, require('./models/' + file));
+      var currentModel = sequelize.import(file, require('../models/' + file));
       db[currentModel.name] = currentModel;
     });
 
