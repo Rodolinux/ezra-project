@@ -145,7 +145,7 @@ class TextLoader {
                         start_verse_number=-1,
                         number_of_verses=-1) {
 
-    var currentBibleTranslationId = bible_browser_controller.tab_controller.getTab(tab_index)?.getBibleTranslationId();
+    var currentBibleTranslationId = bible_browser_controller.tab_controller.getTab(tab_index).getBibleTranslationId();
     var localSwordModule = null;
 
     try {
@@ -451,7 +451,7 @@ class TextLoader {
 
     if (listType == 'search_results') {
       var currentTab = bible_browser_controller.tab_controller.getTab(tabIndex);
-      var currentSearchTerm = currentTab?.getSearchTerm();
+      var currentSearchTerm = currentTab.getSearchTerm();
       bible_browser_controller.module_search.highlightSearchResults(currentSearchTerm, tabIndex);
     }
 

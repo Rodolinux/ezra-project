@@ -198,7 +198,7 @@ class BibleBrowserController {
     this.translation_controller.initTranslationsMenu(-1, ui.index);
 
     // Highlight currently selected book (only in book mode)
-    var textType = this.tab_controller.getTab(ui.index)?.getTextType();
+    var textType = this.tab_controller.getTab(ui.index).getTextType();
     if (textType == 'book') {
       this.book_selection_menu.highlightCurrentlySelectedBookInMenu(ui.index);
     }
@@ -228,7 +228,7 @@ class BibleBrowserController {
     this.module_search.initModuleSearchMenu(tabIndex);
     this.translation_controller.initTranslationsMenu(previousTabIndex, tabIndex);
     this.translation_controller.initBibleTranslationInfoButton();
-    var currentBibleTranslationId = this.tab_controller.getTab(tabIndex)?.getBibleTranslationId();
+    var currentBibleTranslationId = this.tab_controller.getTab(tabIndex).getBibleTranslationId();
     if (currentBibleTranslationId != null) {
       this.translation_controller.enableCurrentTranslationInfoButton(tabIndex);
     }
@@ -564,7 +564,7 @@ class BibleBrowserController {
     }
 
     this.navigation_pane.resetNavigationPane();
-    this.taggedVerseExport?.disableTaggedVersesExportButton();
+    this.taggedVerseExport.disableTaggedVersesExportButton();
   }
 
   initApplicationForVerseList(tabIndex=undefined) {

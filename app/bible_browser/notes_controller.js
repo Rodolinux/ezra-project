@@ -90,7 +90,7 @@ class NotesController {
             if (currentNoteValue == "") {
               updatedTimestamp = "";
             } else {
-              updatedTimestamp = note?.updatedAt;
+              updatedTimestamp = note.updatedAt;
             }
 
             this.updateNoteDate(currentVerseBox, updatedTimestamp);

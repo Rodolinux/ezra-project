@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     });
 
-    return record?.lastModifiedAt;
+    return record.lastModifiedAt;
   };
 
   MetaRecord.updateLastModified = async function() {

@@ -158,8 +158,8 @@ class ModuleSearch {
       index = bible_browser_controller.tab_controller.getSelectedTabIndex();
     }
 
-    var currentSearchResults = bible_browser_controller.tab_controller.getTab(index)?.getSearchResults();
-    return currentSearchResults?.length > 500;
+    var currentSearchResults = bible_browser_controller.tab_controller.getTab(index).getSearchResults();
+    return currentSearchResults.length > 500;
   }
 
   validateStrongsKey() {
@@ -279,10 +279,10 @@ class ModuleSearch {
     //console.log("Rendering search results on tab " + tabIndex);
     var currentTab = bible_browser_controller.tab_controller.getTab(tabIndex);
     var currentTabId = bible_browser_controller.tab_controller.getSelectedTabId(tabIndex);
-    var currentSearchTerm = currentTab?.getSearchTerm();
-    var currentSearchResults = currentTab?.getSearchResults();
+    var currentSearchTerm = currentTab.getSearchTerm();
+    var currentSearchResults = currentTab.getSearchResults();
 
-    if (currentSearchResults?.length > 0) {
+    if (currentSearchResults.length > 0) {
       await bible_browser_controller.text_loader.requestTextUpdate(currentTabId,
                                                                    null,
                                                                    null,
@@ -301,7 +301,7 @@ class ModuleSearch {
     this.hideSearchMenu();
     var moduleSearchHeaderText;
 
-    if (currentSearchResults?.length > 0) {
+    if (currentSearchResults.length > 0) {
       moduleSearchHeaderText = i18n.t("bible-browser.search-result-header") + ' <i>' + currentSearchTerm + '</i> (' + currentSearchResults.length + ')';
     } else {
       moduleSearchHeaderText = i18n.t("bible-browser.no-search-results") + ' <i>' + currentSearchTerm + '</i>';
@@ -317,7 +317,7 @@ class ModuleSearch {
     this.getModuleSearchHeader(tabIndex).html(header);
     this.getModuleSearchHeader(tabIndex).show();
 
-    if (currentSearchResults?.length > 0 && requestedBookId <= 0) {
+    if (currentSearchResults.length > 0 && requestedBookId <= 0) {
       var bibleBookStats = this.getBibleBookStatsFromSearchResults(currentSearchResults);
       this.verseStatisticsChart.updateChart(tabIndex, bibleBookStats);
     }
@@ -325,7 +325,7 @@ class ModuleSearch {
 
   repaintChart(tabIndex=undefined) {
     var currentTab = bible_browser_controller.tab_controller.getTab(tabIndex);
-    var currentSearchResults = currentTab?.getSearchResults();
+    var currentSearchResults = currentTab.getSearchResults();
 
     if (currentSearchResults != null) {
       var bibleBookStats = this.getBibleBookStatsFromSearchResults(currentSearchResults);
